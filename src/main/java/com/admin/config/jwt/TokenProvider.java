@@ -1,7 +1,7 @@
 package com.admin.config.jwt;
 
-import com.admin.dto.jwt.TokenDto;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,84 +15,69 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.time.Duration;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 public class TokenProvider {
 
-    private static final String AUTHORITIES_KEY = "auth";
-    private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
-    private final Key key;
+    private final JwtProperties jwtProperties;
 
-    public TokenProvider(@Value("${jwt.token.key") String secretKey){
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
-    }
+    public final static Duration ACCESS_TOKEN_EXPIRED = Duration.ofHours(2);
+    public final static Duration REFRESH_TOKEN_EXPIRED = Duration.ofDays(14);
+
+    public final String ACCESS_TOKEN = "access_token";
+    public final String REFRESH_TOKEN = "refresh_token";
 
     // 토큰 생성
-    public TokenDto generateTokenDto(Authentication authentication){
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public String generateToken(String adminId, Duration expiredAt){
+        Date now = new Date();
+        return makeToken(new Date(now.getTime() + expiredAt.toMillis()), adminId);
+    }
 
-        System.out.println("authorities : " + authorities);
+    private String makeToken(Date expiry, String adminId) {
+        Date now = new Date();
 
-        long now = new Date().getTime();
-
-        Date tokenExpriesIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-
-        String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .setExpiration(tokenExpriesIn)
-                .signWith(key, SignatureAlgorithm.HS512)
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더 type : jwt
+                .setIssuer(jwtProperties.getIssuer()) // 토큰 생성자
+                .setExpiration(expiry) // 토큰 유효기간
+                .setSubject(adminId) // 내용
+                .claim("id", adminId) // 클레임 id
+                // 서명
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey()) // 비밀키와 HS256으로 암호화
                 .compact();
-
-        return TokenDto.builder().grantType(BEARER_TYPE).accessToken(accessToken).tokenExpiresIn(tokenExpriesIn.getTime()).build();
     }
 
-    // 토큰의 인증을 꺼내오는 메소드
-    public Authentication getAuthentication(String accessToken){
-        Claims claims = parseClaims(accessToken);
-
-        if(claims.get(AUTHORITIES_KEY) == null){
-            throw new RuntimeException("권한 정보가 없습니다.");
-        }
-
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+    public Authentication getAuthentication(String token) {
+        Claims claims = getClaims(token);
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ADMIN"));
+        return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), "", authorities), token, authorities);
     }
 
-    public boolean validateToken(String token){
+    // 토큰 유효성 검사
+    public boolean validToken(String token) {
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parser()
+                    .setSigningKey(jwtProperties.getSecretKey())
+                    .parseClaimsJws(token);
             return true;
-        }catch (SecurityException | MalformedJwtException e){
-            System.out.println("잘못된 JWT 서명입니다.");
-        }catch (ExpiredJwtException e){
-            System.out.println("만료된 JWT 토큰입니다.");
-        }catch (UnsupportedJwtException e){
-            System.out.println("지원하지 않는 JWT 토큰입니다.");
-        }catch (IllegalArgumentException e){
-            System.out.println("JWT 토큰이 잘못되었습니다.");
+        }catch (Exception e){
+            return false;
         }
     }
 
-    public Claims parseClaims (String accessToken) {
-        try{
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        } catch (ExpiredJwtException e){
-            return e.getClaims();
-        }
+    public String getAdminId(String token){
+        Claims claims = getClaims(token);
+        return claims.get("id", String.class);
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtProperties.getSecretKey())
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
