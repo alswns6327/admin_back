@@ -2,8 +2,12 @@ package com.admin.domain.auth;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "refresh_token")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +28,8 @@ public class RefreshToken {
         this.refreshToken = refreshToken;
     }
 
-    public void update(String newRefreshToken){
+    public RefreshToken update(String newRefreshToken){
         this.refreshToken = newRefreshToken;
+        return this;
     }
 }
