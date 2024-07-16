@@ -42,16 +42,12 @@ public class AuthService {
             account.setRefreshToken(newRefreshtoken);
             authRepository.save(account);
 
-            addTokenCookie(accessToken, refreshToken, response, request);
+            CookieUtil.addCookie(response, tokenProvider.REFRESH_TOKEN, refreshToken, (int)tokenProvider.REFRESH_TOKEN_EXPIRED.toSeconds());
 
-            return new ResponseLoginDto(requestLoginDto, accessToken, refreshToken);
+
+            return new ResponseLoginDto(account, accessToken);
         } else{
             return new ResponseLoginDto();
         }
-    }
-
-    public void addTokenCookie(String accessToken, String refreshToken, HttpServletResponse response, HttpServletRequest request){
-        CookieUtil.addCookie(response, tokenProvider.ACCESS_TOKEN, accessToken, (int)tokenProvider.ACCESS_TOKEN_EXPIRED.toSeconds());
-        CookieUtil.addCookie(response, tokenProvider.REFRESH_TOKEN, refreshToken, (int)tokenProvider.REFRESH_TOKEN_EXPIRED.toSeconds());
     }
 }
