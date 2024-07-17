@@ -1,7 +1,6 @@
-package com.admin.dto.auth.res;
+package com.admin.dto.auth;
 
 import com.admin.domain.auth.Account;
-import com.admin.dto.auth.req.RequestLoginDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

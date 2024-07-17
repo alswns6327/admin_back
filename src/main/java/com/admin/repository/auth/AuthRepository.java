@@ -1,7 +1,7 @@
 package com.admin.repository.auth;
 
 import com.admin.domain.auth.Account;
-import com.admin.dto.auth.req.RequestLoginDto;
+import com.admin.dto.auth.RequestLoginDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

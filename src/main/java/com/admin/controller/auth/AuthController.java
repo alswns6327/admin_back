@@ -1,8 +1,8 @@
 package com.admin.controller.auth;
 
 import com.admin.domain.auth.Account;
-import com.admin.dto.auth.req.RequestLoginDto;
-import com.admin.dto.auth.res.ResponseLoginDto;
+import com.admin.dto.auth.RequestLoginDto;
+import com.admin.dto.auth.ResponseLoginDto;
 import com.admin.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

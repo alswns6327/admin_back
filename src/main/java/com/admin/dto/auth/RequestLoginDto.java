@@ -1,4 +1,4 @@
-package com.admin.dto.auth.req;
+package com.admin.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

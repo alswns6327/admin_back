@@ -24,7 +24,7 @@ public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ADMIN_ACCOUNT_ID", updatable = false, nullable = false)
-    private long adminAccountId;
+    private Long id;
 
     @Column(name = "ADMIN_ID", nullable = false)
     private String adminId;
