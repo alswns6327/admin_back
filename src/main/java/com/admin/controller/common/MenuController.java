@@ -17,6 +17,7 @@ public class MenuController {
 
     @GetMapping("/menu")
     public ResponseEntity<List<ResponseMenuDto>> getMenuList(){
+        System.out.println("git 커밋 잔디 테스트");
         return ResponseEntity.ok().body(menuService.getMenuList());
     }
 
