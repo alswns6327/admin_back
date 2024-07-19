@@ -1,5 +1,7 @@
 package com.admin.service.menu;
 
+import com.admin.domain.menu.Menu;
+import com.admin.dto.menu.RequestMenuDto;
 import com.admin.dto.menu.ResponseMenuDto;
 import com.admin.repository.menu.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +17,14 @@ public class MenuService {
     private final MenuRepository menuRepository;
 
     public List<ResponseMenuDto> getMenuList(){
-        List<ResponseMenuDto> responseMenuDtos = menuRepository.findByParentMenuId(0L)
+        List<ResponseMenuDto> responseMenuDtos = menuRepository.findByParentMenuIdAndDelYn(0L, 1)
                 .stream()
                 .map(ResponseMenuDto::new)
                 .collect(Collectors.toList());
 
         for(ResponseMenuDto responseMenuDto : responseMenuDtos){
             responseMenuDto.setChildrenMenu(
-                menuRepository.findByParentMenuId(responseMenuDto.getId())
+                menuRepository.findByParentMenuIdAndDelYn(responseMenuDto.getId(), 1)
                     .stream()
                     .map(ResponseMenuDto::new)
                     .collect(Collectors.toList())
@@ -32,4 +34,20 @@ public class MenuService {
         return responseMenuDtos;
     }
 
+    public List<ResponseMenuDto> saveMenu(RequestMenuDto requestMenuDto) {
+        menuRepository.save(new Menu(requestMenuDto));
+        return getMenuList();
+    }
+
+    public List<ResponseMenuDto> removeMenu(Long id) {
+
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+
+        menu.removeMenu();
+
+        menuRepository.save(menu);
+
+        return getMenuList();
+    }
 }

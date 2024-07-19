@@ -1,6 +1,6 @@
 package com.admin.dto.menu;
 
-import com.admin.domain.common.Menu;
+import com.admin.domain.menu.Menu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
