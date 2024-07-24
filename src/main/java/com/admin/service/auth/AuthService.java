@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class AuthService {
@@ -49,5 +52,9 @@ public class AuthService {
         } else{
             return new ResponseLoginDto();
         }
+    }
+
+    public List<ResponseLoginDto> getAdminList() {
+        return authRepository.findAll().stream().map(ResponseLoginDto::new).collect(Collectors.toList());
     }
 }

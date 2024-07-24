@@ -21,4 +21,9 @@ public class ResponseLoginDto {
         this.name = account.getName();
         this.accessToken = accessToken;
     }
+
+    public ResponseLoginDto(Account account) {
+        this.adminId = account.getAdminId();
+        this.name = account.getName();
+    }
 }
