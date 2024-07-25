@@ -23,13 +23,22 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginDto> loginAccount(@RequestBody RequestLoginDto requestLoginDto, HttpServletResponse response, HttpServletRequest request){
-
         return ResponseEntity.ok().body(authService.loginAccount(requestLoginDto, response, request));
+    }
+
+    @GetMapping("/refreshToken")
+    public ResponseEntity<String> checkRefreshToken(HttpServletResponse response, HttpServletRequest request){
+        return ResponseEntity.ok().body(authService.checkRefreshToken(response, request));
     }
 
     @GetMapping("/admin/list")
     public ResponseEntity<List<ResponseLoginDto>> getAdminList(){
         return ResponseEntity.ok().body(authService.getAdminList());
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<?> saveAdmin(@RequestBody RequestLoginDto requestLoginDto) {
+        return ResponseEntity.ok().body(authService.saveAdmin(requestLoginDto));
     }
 
 }

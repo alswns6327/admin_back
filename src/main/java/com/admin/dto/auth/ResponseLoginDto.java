@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class ResponseLoginDto {
     private String adminId;
     private String accessToken;
-    private String refreshToken;
     private String name;
 
     @Builder

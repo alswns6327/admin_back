@@ -1,6 +1,8 @@
 package com.admin.domain.auth;
 
 
+import com.admin.dto.auth.RequestLoginDto;
+import com.admin.dto.auth.ResponseLoginDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,5 +69,11 @@ public class Account implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Account(RequestLoginDto requestLoginDto){
+        this.adminId = requestLoginDto.getAdminId();
+        this.password = requestLoginDto.getPassword();
+        this.name = requestLoginDto.getName();
     }
 }

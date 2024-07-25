@@ -8,6 +8,7 @@ import com.admin.dto.auth.ResponseLoginDto;
 import com.admin.repository.auth.AuthRepository;
 import com.admin.repository.auth.RefreshTokenRepository;
 import com.admin.util.CookieUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class AuthService {
             account.setRefreshToken(newRefreshtoken);
             authRepository.save(account);
 
-            CookieUtil.addCookie(response, tokenProvider.REFRESH_TOKEN, refreshToken, (int)tokenProvider.REFRESH_TOKEN_EXPIRED.toSeconds());
+            CookieUtil.addCookie(response, tokenProvider.REFRESH_TOKEN, refreshToken, (int)tokenProvider.REFRESH_TOKEN_EXPIRED.toSeconds(), true);
 
 
             return new ResponseLoginDto(account, accessToken);
@@ -56,5 +57,19 @@ public class AuthService {
 
     public List<ResponseLoginDto> getAdminList() {
         return authRepository.findAll().stream().map(ResponseLoginDto::new).collect(Collectors.toList());
+    }
+
+    public ResponseLoginDto saveAdmin(RequestLoginDto requestLoginDto) {
+        requestLoginDto.encrytPassword(bCryptPasswordEncoder);
+        return new ResponseLoginDto(authRepository.save(new Account(requestLoginDto)));
+    }
+
+    public String checkRefreshToken(HttpServletResponse response, HttpServletRequest request) {
+
+        String refreshToken = CookieUtil.getCookie(request, tokenProvider.REFRESH_TOKEN);
+
+
+        if(refreshToken == null || !tokenProvider.validToken(refreshToken)) return "login";
+        else return tokenProvider.generateToken(tokenProvider.getAdminId(refreshToken), tokenProvider.ACCESS_TOKEN_EXPIRED);
     }
 }

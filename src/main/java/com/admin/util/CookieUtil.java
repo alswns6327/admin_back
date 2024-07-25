@@ -10,11 +10,11 @@ import java.util.Base64;
 public class CookieUtil {
 
     // 요청값(이름, 값, 만료 기간)
-    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+    public static void addCookie(HttpServletResponse response, String name, String value, int maxAge, boolean httpOnly) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
         cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(httpOnly);
         response.addCookie(cookie);
     }
 
