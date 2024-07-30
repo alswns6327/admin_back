@@ -12,7 +12,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +73,14 @@ public class AuthService {
 
         if(refreshToken == null || !tokenProvider.validToken(refreshToken)) return "login";
         else return tokenProvider.generateToken(tokenProvider.getAdminId(refreshToken), tokenProvider.ACCESS_TOKEN_EXPIRED);
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try{
+            new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+            CookieUtil.deleteCookie(request, response, tokenProvider.REFRESH_TOKEN);
+        }catch (Exception e){
+            throw new Exception("로그아웃 실패");
+        }
     }
 }
