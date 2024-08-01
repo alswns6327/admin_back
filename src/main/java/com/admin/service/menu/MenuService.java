@@ -17,14 +17,14 @@ public class MenuService {
     private final MenuRepository menuRepository;
 
     public List<ResponseMenuDto> getMenuList(){
-        List<ResponseMenuDto> responseMenuDtos = menuRepository.findByParentMenuIdAndDelYn(0L, 1)
+        List<ResponseMenuDto> responseMenuDtos = menuRepository.findByParentMenuIdAndDelYnOrderByMenuOrder(0L, 1)
                 .stream()
                 .map(ResponseMenuDto::new)
                 .collect(Collectors.toList());
 
         for(ResponseMenuDto responseMenuDto : responseMenuDtos){
             responseMenuDto.setChildrenMenu(
-                menuRepository.findByParentMenuIdAndDelYn(responseMenuDto.getId(), 1)
+                menuRepository.findByParentMenuIdAndDelYnOrderByMenuOrder(responseMenuDto.getId(), 1)
                     .stream()
                     .map(ResponseMenuDto::new)
                     .collect(Collectors.toList())
