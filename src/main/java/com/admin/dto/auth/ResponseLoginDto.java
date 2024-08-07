@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ResponseLoginDto {
+    private Long id;
     private String adminId;
     private String accessToken;
     private String name;
@@ -22,6 +23,7 @@ public class ResponseLoginDto {
     }
 
     public ResponseLoginDto(Account account) {
+        this.id = account.getId();
         this.adminId = account.getAdminId();
         this.name = account.getName();
     }

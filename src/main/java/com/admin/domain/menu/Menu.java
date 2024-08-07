@@ -37,9 +37,11 @@ public class Menu {
     }
 
     public Menu(RequestMenuDto requestMenuDto){
+        this.id = requestMenuDto.getId();
         this.parentMenuId = requestMenuDto.getParentMenuId();
         this.menuOrder = requestMenuDto.getMenuOrder();
         this.menuPath = requestMenuDto.getMenuPath();
         this.menuName = requestMenuDto.getMenuName();
+        this.delYn = 1;
     }
 }

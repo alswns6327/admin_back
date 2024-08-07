@@ -72,6 +72,7 @@ public class Account implements UserDetails {
     }
 
     public Account(RequestLoginDto requestLoginDto){
+        this.id = requestLoginDto.getId();
         this.adminId = requestLoginDto.getAdminId();
         this.password = requestLoginDto.getPassword();
         this.name = requestLoginDto.getName();

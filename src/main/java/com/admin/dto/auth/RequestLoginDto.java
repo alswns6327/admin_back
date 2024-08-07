@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Getter
 public class RequestLoginDto {
 
+    private Long id;
     private String adminId;
     private String password;
     private String name;
