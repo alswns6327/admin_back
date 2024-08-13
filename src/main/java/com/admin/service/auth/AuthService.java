@@ -58,7 +58,7 @@ public class AuthService {
     }
 
     public List<ResponseLoginDto> getAdminList() {
-        return authRepository.findAll().stream().map(ResponseLoginDto::new).collect(Collectors.toList());
+        return authRepository.findByDelYn(1).stream().map(ResponseLoginDto::new).collect(Collectors.toList());
     }
 
     public ResponseLoginDto saveAdmin(RequestLoginDto requestLoginDto) {
@@ -82,5 +82,16 @@ public class AuthService {
         }catch (Exception e){
             throw new Exception("로그아웃 실패");
         }
+    }
+
+    public List<ResponseLoginDto> removeAdmin(long id) {
+
+        Account account = authRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("삭제 실패 : " + id));
+
+        account.removeAdmin();
+
+        authRepository.save(account);
+
+        return getAdminList();
     }
 }

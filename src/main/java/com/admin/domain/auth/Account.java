@@ -41,6 +41,9 @@ public class Account implements UserDetails {
     @JoinColumn(name = "REFRESH_TOKEN_ID")
     private RefreshToken refreshToken;
 
+    @Column(name="DEL_YN", nullable = false)
+    private int delYn;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ADMIN"));
@@ -69,6 +72,11 @@ public class Account implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Account removeAdmin() {
+        this.delYn = 0;
+        return this;
     }
 
     public Account(RequestLoginDto requestLoginDto){

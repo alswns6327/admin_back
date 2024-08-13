@@ -15,7 +15,7 @@ public class MenuController {
 
     private final MenuService menuService;
 
-    @GetMapping("/menu")
+    @GetMapping("/menu/list")
     public ResponseEntity<List<ResponseMenuDto>> getMenuList(){
         return ResponseEntity.ok().body(menuService.getMenuList());
     }
@@ -25,8 +25,8 @@ public class MenuController {
         return ResponseEntity.ok().body(menuService.saveMenu(requestMenuDto));
     }
 
-    @PatchMapping("/menu")
-    public ResponseEntity<List<ResponseMenuDto>> removeMenu(@RequestBody RequestMenuDto requestMenuDto){
-        return ResponseEntity.ok().body(menuService.removeMenu(requestMenuDto.getId()));
+    @DeleteMapping("/menu/{menuId}")
+    public ResponseEntity<List<ResponseMenuDto>> removeMenu(@PathVariable("menuId") String menuId){
+        return ResponseEntity.ok().body(menuService.removeMenu(Long.parseLong(menuId)));
     }
 }

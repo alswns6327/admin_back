@@ -39,10 +39,10 @@ public class MenuService {
         return getMenuList();
     }
 
-    public List<ResponseMenuDto> removeMenu(Long id) {
+    public List<ResponseMenuDto> removeMenu(Long menuId) {
 
-        Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("not found : " + menuId));
 
         menu.removeMenu();
 
