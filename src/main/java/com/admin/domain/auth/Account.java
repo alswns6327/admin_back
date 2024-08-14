@@ -84,5 +84,6 @@ public class Account implements UserDetails {
         this.adminId = requestLoginDto.getAdminId();
         this.password = requestLoginDto.getPassword();
         this.name = requestLoginDto.getName();
+        this.delYn = 1;
     }
 }

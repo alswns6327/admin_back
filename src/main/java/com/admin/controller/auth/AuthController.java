@@ -36,7 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<?> saveAdmin(@RequestBody RequestLoginDto requestLoginDto) {
+    public ResponseEntity<List<ResponseLoginDto>> saveAdmin(@RequestBody RequestLoginDto requestLoginDto) {
         return ResponseEntity.ok().body(authService.saveAdmin(requestLoginDto));
     }
 

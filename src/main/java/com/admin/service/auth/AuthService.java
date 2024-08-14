@@ -61,9 +61,10 @@ public class AuthService {
         return authRepository.findByDelYn(1).stream().map(ResponseLoginDto::new).collect(Collectors.toList());
     }
 
-    public ResponseLoginDto saveAdmin(RequestLoginDto requestLoginDto) {
+    public List<ResponseLoginDto> saveAdmin(RequestLoginDto requestLoginDto) {
         requestLoginDto.encrytPassword(bCryptPasswordEncoder);
-        return new ResponseLoginDto(authRepository.save(new Account(requestLoginDto)));
+        authRepository.save(new Account(requestLoginDto));
+        return getAdminList();
     }
 
     public String checkRefreshToken(HttpServletResponse response, HttpServletRequest request) {
