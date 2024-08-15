@@ -1,5 +1,6 @@
 package com.admin.domain.code;
 
+import com.admin.dto.code.RequestCodeDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,5 +33,21 @@ public class AdminCode {
     @JoinColumn(name = "ADMIN_CODE_GROUP_ID")
     private AdminCodeGroup adminCodeGroup;
 
+    public AdminCode(RequestCodeDto requestCodeDto, AdminCodeGroup adminCodeGroup) {
+        this.adminCodeName = requestCodeDto.getCodeName();
+        this.adminCode = requestCodeDto.getCode();
+        this.adminCodeGroup = adminCodeGroup;
+        this.delYn = 1;
+    }
 
+    public AdminCode update(RequestCodeDto requestCodeDto) {
+        this.adminCodeName = requestCodeDto.getCodeName();
+        this.adminCode = requestCodeDto.getCode();
+
+        return this;
+    }
+
+    public void remove() {
+        this.delYn = 0;
+    }
 }

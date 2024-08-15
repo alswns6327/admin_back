@@ -86,4 +86,10 @@ public class Account implements UserDetails {
         this.name = requestLoginDto.getName();
         this.delYn = 1;
     }
+
+    public Account update(RequestLoginDto requestLoginDto) {
+        this.adminId = requestLoginDto.getAdminId();
+        this.name = requestLoginDto.getName();
+        return this;
+    }
 }

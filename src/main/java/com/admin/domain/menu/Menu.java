@@ -44,4 +44,11 @@ public class Menu {
         this.menuName = requestMenuDto.getMenuName();
         this.delYn = 1;
     }
+
+    public Menu update(RequestMenuDto requestMenuDto) {
+        this.menuPath = requestMenuDto.getMenuPath();
+        this.menuName = requestMenuDto.getMenuName();
+
+        return this;
+    }
 }

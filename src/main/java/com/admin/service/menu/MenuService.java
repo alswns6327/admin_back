@@ -35,7 +35,9 @@ public class MenuService {
     }
 
     public List<ResponseMenuDto> saveMenu(RequestMenuDto requestMenuDto) {
-        menuRepository.save(new Menu(requestMenuDto));
+        Menu menu = menuRepository.findById(requestMenuDto.getId()).map(entity -> entity.update(requestMenuDto))
+                        .orElse(new Menu(requestMenuDto));
+        menuRepository.save(menu);
         return getMenuList();
     }
 

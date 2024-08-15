@@ -1,5 +1,6 @@
 package com.admin.domain.code;
 
+import com.admin.dto.code.RequestCodeGroupDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +31,17 @@ public class AdminCodeGroup {
     @OneToMany(mappedBy = "adminCodeGroup", fetch = FetchType.LAZY)
     private List<AdminCode> adminCodeList;
 
+    public AdminCodeGroup(RequestCodeGroupDto requestCodeGroupDto) {
+        this.adminCodeGroupName = requestCodeGroupDto.getCodeGroupName();
+        this.delYn = 1;
+    }
+
+    public AdminCodeGroup update(RequestCodeGroupDto requestCodeGroupDto) {
+        this.adminCodeGroupName = requestCodeGroupDto.getCodeGroupName();
+        return this;
+    }
+
+    public void remove() {
+        this.delYn = 0;
+    }
 }

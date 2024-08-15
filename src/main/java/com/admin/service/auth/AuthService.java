@@ -63,7 +63,9 @@ public class AuthService {
 
     public List<ResponseLoginDto> saveAdmin(RequestLoginDto requestLoginDto) {
         requestLoginDto.encrytPassword(bCryptPasswordEncoder);
-        authRepository.save(new Account(requestLoginDto));
+        Account account = authRepository.findById(requestLoginDto.getId()).map(entity -> entity.update(requestLoginDto))
+                        .orElse(new Account(requestLoginDto));
+        authRepository.save(account);
         return getAdminList();
     }
 
