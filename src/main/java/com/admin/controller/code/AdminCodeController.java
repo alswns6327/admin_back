@@ -42,7 +42,7 @@ public class AdminCodeController {
         return ResponseEntity.ok().body(adminCodeService.removeCodeGroup(Long.parseLong(codeGroupId)));
     }
 
-    @DeleteMapping("/code/group/{codeId}")
+    @DeleteMapping("/code/{codeId}")
     public ResponseEntity<List<ResponseCodeDto>> removeCode(@PathVariable("codeId") String codeId){
         return ResponseEntity.ok().body(adminCodeService.removeCode(Long.parseLong(codeId)));
     }
