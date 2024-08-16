@@ -91,7 +91,7 @@ public class AuthService {
 
         Account account = authRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("삭제 실패 : " + id));
 
-        account.removeAdmin();
+        account.remove();
 
         authRepository.save(account);
 

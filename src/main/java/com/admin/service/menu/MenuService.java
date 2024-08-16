@@ -46,7 +46,7 @@ public class MenuService {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new IllegalArgumentException("not found : " + menuId));
 
-        menu.removeMenu();
+        menu.remove();
 
         menuRepository.save(menu);
 

@@ -1,6 +1,8 @@
 package com.admin.domain.code;
 
+import com.admin.domain.common.CommonColumns1;
 import com.admin.dto.code.RequestCodeGroupDto;
+import com.admin.util.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "admin_code_group")
-public class AdminCodeGroup {
+public class AdminCodeGroup extends CommonColumns1 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,23 +27,15 @@ public class AdminCodeGroup {
     @Column(name = "ADMIN_CODE_GROUP_NAME", nullable = false)
     private String adminCodeGroupName;
 
-    @Column(name = "DEL_YN", nullable = false)
-    private int delYn;
-
     @OneToMany(mappedBy = "adminCodeGroup", fetch = FetchType.LAZY)
     private List<AdminCode> adminCodeList;
 
     public AdminCodeGroup(RequestCodeGroupDto requestCodeGroupDto) {
         this.adminCodeGroupName = requestCodeGroupDto.getCodeGroupName();
-        this.delYn = 1;
     }
 
     public AdminCodeGroup update(RequestCodeGroupDto requestCodeGroupDto) {
         this.adminCodeGroupName = requestCodeGroupDto.getCodeGroupName();
         return this;
-    }
-
-    public void remove() {
-        this.delYn = 0;
     }
 }

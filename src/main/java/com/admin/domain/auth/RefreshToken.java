@@ -1,5 +1,7 @@
 package com.admin.domain.auth;
 
+import com.admin.domain.common.CommonColumns1;
+import com.admin.util.Common;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +13,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "refresh_token")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RefreshToken {
+public class RefreshToken extends CommonColumns1 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

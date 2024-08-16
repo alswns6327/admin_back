@@ -24,7 +24,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
             return bearerToken.substring(BEARER_PREFIX.length());
         }
-
         return null;
     }
 
@@ -35,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(jwt) && tokenProvider.validToken(jwt)){
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            request.setAttribute("adminId", tokenProvider.getAdminId(jwt));
         }
 
         filterChain.doFilter(request, response);

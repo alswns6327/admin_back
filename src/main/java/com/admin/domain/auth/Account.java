@@ -1,8 +1,10 @@
 package com.admin.domain.auth;
 
 
+import com.admin.domain.common.CommonColumns1;
 import com.admin.dto.auth.RequestLoginDto;
 import com.admin.dto.auth.ResponseLoginDto;
+import com.admin.util.Common;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "admin_account")
-public class Account implements UserDetails {
+public class Account extends CommonColumns1 implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +42,6 @@ public class Account implements UserDetails {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "REFRESH_TOKEN_ID")
     private RefreshToken refreshToken;
-
-    @Column(name="DEL_YN", nullable = false)
-    private int delYn;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -74,17 +73,11 @@ public class Account implements UserDetails {
         return true;
     }
 
-    public Account removeAdmin() {
-        this.delYn = 0;
-        return this;
-    }
-
     public Account(RequestLoginDto requestLoginDto){
         this.id = requestLoginDto.getId();
         this.adminId = requestLoginDto.getAdminId();
         this.password = requestLoginDto.getPassword();
         this.name = requestLoginDto.getName();
-        this.delYn = 1;
     }
 
     public Account update(RequestLoginDto requestLoginDto) {
