@@ -29,7 +29,7 @@ public class AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenProvider tokenProvider;
 
-    public ResponseLoginDto loginAccount(RequestLoginDto requestLoginDto, HttpServletResponse response, HttpServletRequest request){
+    public ResponseLoginDto loginAccount(RequestLoginDto requestLoginDto, HttpServletResponse response){
         Account account = authRepository.findByAdminId(requestLoginDto.getAdminId())
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + requestLoginDto.getAdminId()));
 

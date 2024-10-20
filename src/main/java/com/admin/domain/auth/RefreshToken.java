@@ -1,7 +1,6 @@
 package com.admin.domain.auth;
 
 import com.admin.domain.common.CommonColumns1;
-import com.admin.util.Common;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
