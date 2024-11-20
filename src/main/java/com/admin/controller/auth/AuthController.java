@@ -21,8 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseLoginDto> loginAccount(@RequestBody RequestLoginDto requestLoginDto, HttpServletResponse response, HttpServletRequest request){
-        return ResponseEntity.ok().body(authService.loginAccount(requestLoginDto, response, request));
+    public ResponseEntity<ResponseLoginDto> loginAccount(@RequestBody RequestLoginDto requestLoginDto, HttpServletResponse response){
+        return ResponseEntity.ok().body(authService.loginAccount(requestLoginDto, response));
     }
 
     @GetMapping("/refreshToken")

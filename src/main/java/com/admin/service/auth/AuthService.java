@@ -58,7 +58,7 @@ public class AuthService {
     }
 
     public List<ResponseLoginDto> getAdminList() {
-        return authRepository.findByDelYn(1).stream().map(ResponseLoginDto::new).collect(Collectors.toList());
+        return authRepository.findByDelYn(0).stream().map(ResponseLoginDto::new).collect(Collectors.toList());
     }
 
     public List<ResponseLoginDto> saveAdmin(RequestLoginDto requestLoginDto) {
@@ -80,6 +80,7 @@ public class AuthService {
 
     public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try{
+            System.out.println(CookieUtil.getCookie(request, tokenProvider.REFRESH_TOKEN));
             new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
             CookieUtil.deleteCookie(request, response, tokenProvider.REFRESH_TOKEN);
         }catch (Exception e){

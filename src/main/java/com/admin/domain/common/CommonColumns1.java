@@ -35,14 +35,14 @@ public abstract class CommonColumns1 {
     public void remove(){
         this.lastUpdateDt = LocalDateTime.now();
         this.lastUpdateUser = Common.getAdminId();
-        this.delYn = 0;
+        this.delYn = 1;
     }
 
     @PrePersist // 데이터 생성이 이루어질때 사전 작업
     public void prePersist() {
         this.firstSaveDt = LocalDateTime.now();
         this.firstSaveUser = Common.getAdminId();
-        this.delYn = 1;
+        this.delYn = 0;
     }
 
     @PreUpdate // 데이터 수정이 이루어질때 사전 작업

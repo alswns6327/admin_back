@@ -22,11 +22,12 @@ public class AdminCodeService {
     private final AdminCodeGroupRepository adminCodeGroupRepository;
 
     public List<ResponseCodeGroupDto> getCodeGroupList() {
-        return adminCodeGroupRepository.findByDelYn(1).stream().map(ResponseCodeGroupDto::new).collect(Collectors.toList());
+        return adminCodeGroupRepository.findByDelYn(0).stream().map(ResponseCodeGroupDto::new).collect(Collectors.toList());
     }
 
     public List<ResponseCodeDto> getCodeList(Long codeGroupId) {
-        return adminCodeRepository.findByAdminCodeGroupIdAndDelYn(codeGroupId, 1).stream().map(ResponseCodeDto::new).collect(Collectors.toList());
+        return adminCodeRepository.findByAdminCodeGroupIdAndDelYn(codeGroupId, 0).stream()
+                .map(ResponseCodeDto::new).collect(Collectors.toList());
     }
 
     public List<ResponseCodeGroupDto> saveCodeGroup(RequestCodeGroupDto requestCodeGroupDto) {
